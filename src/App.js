@@ -30,9 +30,13 @@ class BooksApp extends React.Component {
   }
   
   handleSearch = (event)=>{
-    console.log(event.target.value)
-    search(event.target.value,10)
+    event.target.value==="" ?
+      getAll()
+    .then(data =>this.setState((prevState)=>{prevState.books=data}))
+    :
+    search(event.target.value,20)
     .then(data=>{this.setState((prevState)=>{if(data.error){prevState.error=data.error}else{prevState.books=data; prevState.error=undefined}})})
+   
   }
   
 
@@ -48,6 +52,7 @@ class BooksApp extends React.Component {
   />
       : (
           <div className="list-books">
+        
             <div className="list-books-title">
               <h1>MyReads</h1>
             </div>
