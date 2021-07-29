@@ -1,24 +1,35 @@
 import React from "react"
+import {update} from "./BooksAPI"
+import ShelfList from "./ShelfList"
 
 
-const ListBooks=(props)=>{
-
+class ListBooks extends React.Component{
+  constructor(props){
+  super(props)
+    this.state = {}
+    this.handleShelf = this.handleShelf.bind(this)
+  }
+  
+ handleShelf=()=>{
+   
+    
+  }
+render(){
     return(
       <ol className="books-grid">
       {
-      props.books.filter(e=>e.shelf===props.shelf).map(e=>{
+      this.props.books.filter(e=>e.shelf===this.props.shelf).map(e=>{
         return (
         <li key={e.id}>
                         <div className="book">
                           <div className="book-top">
                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 														`url("${e.imageLinks.thumbnail}")` }}></div>
                             <div className="book-shelf-changer">
-                              <select>
+                              <select value={e.shelf} onChange={(event)=>update(e,event.target.value)
+								.then(()=>this.props.handleUpdate())
+								}>
                                 <option value="move" disabled>Move to...</option>
-                                <option value="currentlyReading">Currently Reading</option>
-                                <option value="wantToRead">Want to Read</option>
-                                <option value="read">Read</option>
-                                <option value="none">None</option>
+										{ShelfList}
                               </select>
                             </div>
                           </div>
@@ -32,6 +43,7 @@ const ListBooks=(props)=>{
       }
       </ol>
     )
+}
   }
 
 export default ListBooks

@@ -1,14 +1,12 @@
 import React from 'react'
-// import * as BooksAPI from './BooksAPI'
 import './App.css'
-import {get, getAll,update,search} from "./BooksAPI"
+import { getAll,search} from "./BooksAPI"
 import ListBooks from "./ListBooks"
 import Search from "./Search"
+import {WantToRead, Read,CurrentlyReading} from "./Constants"
 
 
-const WantToRead = "wantToRead";
-const Read = "read";
-const CurrentlyReading = "currentlyReading";
+
 
 class BooksApp extends React.Component {
   state = {
@@ -19,16 +17,21 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     books:[],
-    showSearchPage: false
+    showSearchPage: false,
+    shelfVal:null
   }
   
 
   componentDidMount(){
     getAll()
     .then(data =>this.setState((prevState)=>{prevState.books=data}))
-    .then(()=>console.log(this.state))
   }
   
+  handleUpdate=(event)=>{
+    this.state.showSearchPage ? this.handleSearch():
+  getAll()
+    .then(data =>this.setState((prevState)=>{prevState.books=data}))
+  }
   handleSearch = (event)=>{
     event.target.value==="" ?
       getAll()
@@ -36,7 +39,6 @@ class BooksApp extends React.Component {
     :
     search(event.target.value,20)
     .then(data=>{this.setState((prevState)=>{if(data.error){prevState.error=data.error}else{prevState.books=data; prevState.error=undefined}})})
-   
   }
   
 
@@ -47,6 +49,7 @@ class BooksApp extends React.Component {
       <Search 
       searchBooks={() => this.setState({ showSearchPage: false })} 
   handleSearch={this.handleSearch}
+  handleUpdate={this.handleUpdate}
   books={this.state.books}
   error={this.state.error}
   />
@@ -61,20 +64,20 @@ class BooksApp extends React.Component {
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Currently Reading</h2>
                   <div className="bookshelf-books">
-                    <ListBooks books={this.state.books} shelf={CurrentlyReading}/>
+                    <ListBooks books={this.state.books} shelf={CurrentlyReading} handleUpdate={this.handleUpdate}/>
                   </div>
                 </div>
 
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Want to Read</h2>
                   <div className="bookshelf-books">
-                    <ListBooks books={this.state.books} shelf={WantToRead}/>
+                    <ListBooks books={this.state.books} shelf={WantToRead} handleUpdate={this.handleUpdate}/>
                   </div>
                 </div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Read</h2>
                   <div className="bookshelf-books">
-                   <ListBooks books={this.state.books} shelf={Read}/>
+                   <ListBooks books={this.state.books} shelf={Read} handleUpdate={this.handleUpdate}/>
                   </div>
                 </div>
               </div>
