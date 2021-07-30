@@ -1,13 +1,14 @@
 import React from "react"
 import ShelfList from "./ShelfList"
 import {update} from "./BooksAPI"
+import {Link} from "react-router-dom"
 
 const Search =(props)=>{
 
 return (
  <div className="search-books">
             <div className="search-books-bar">
-              <a className="close-search" onClick={props.searchBooks}>Close</a>
+              <Link to="/list" className="close-search">Close</Link>
               <div className="search-books-input-wrapper">
                 {/*
                   NOTES: The search from BooksAPI is limited to a particular set of search terms.
