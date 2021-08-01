@@ -1,11 +1,9 @@
-import React from 'react'
-import './App.css'
-import { getAll,search} from "./BooksAPI"
-import Search from "./Search"
-import {Route,Redirect} from "react-router-dom"
-import Books from "./Books"
-
-
+import React from "react";
+import "./App.css";
+import { getAll} from "./BooksAPI";
+import Search from "./Search";
+import { Route } from "react-router-dom";
+import Books from "./Books";
 
 class BooksApp extends React.Component {
   state = {
@@ -15,58 +13,56 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
-    books:[],
+    books: [],
     showSearchPage: false,
-    shelfVal:null
-  }
-  
+    shelfVal: null,
+  };
 
-  componentDidMount(){
-    getAll()
-    .then(data =>this.setState((prevState)=>{prevState.books=data}))
+  componentDidMount() {
+    getAll().then((data) =>
+      this.setState((prevState) => {
+        prevState.books = data;
+      })
+    );
   }
-  
-  handleUpdate=(event)=>{
-    this.state.showSearchPage ? this.handleSearch():
-  getAll()
-    .then(data =>this.setState((prevState)=>{prevState.books=data}))
-  }
-  handleSearch = (event)=>{
-    event.target.value==="" ?
-      getAll()
-    .then(data =>this.setState((prevState)=>{prevState.books=data}))
-    :
-    search(event.target.value,20)
-    .then(data=>{this.setState((prevState)=>{if(data.error){prevState.error=data.error}else{prevState.books=data; prevState.error=undefined}})})
-  }
-  
+
+  handleUpdate = (event) => {
+    this.state.showSearchPage
+      ? this.handleSearch()
+      : getAll().then((data) =>
+          this.setState((prevState) => {
+            prevState.books = data;
+          })
+        );
+  };
 
   render() {
     return (
       <div className="app">
-        <Route path="/add" 
-      render={
-      ()=>
-    (
-      <Search 
-      searchBooks={() => this.setState({ showSearchPage: false })} 
-  handleSearch={this.handleSearch}
-  handleUpdate={this.handleUpdate}
-  books={this.state.books}
-  error={this.state.error}
-  />)}/>
-
-      <Route path="/list" render={()=>(
-          <Books 
-        handleUpdate={this.handleUpdate}
-		handleInputChange={this.handleInputChange}
-		books={this.state.books}
+        <Route
+          path="/search"
+          render={() => (
+            <Search
+              searchBooks={() => this.setState({ showSearchPage: false })}
+              handleUpdate={this.handleUpdate}
+            />
+          )}
         />
-        )}/>
-<Redirect exact from="/" to="/list"/>
+
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <Books
+              handleUpdate={this.handleUpdate}
+              handleInputChange={this.handleInputChange}
+              books={this.state.books}
+            />
+          )}
+        />
       </div>
-    )
+    );
   }
 }
 
-export default BooksApp
+export default BooksApp;

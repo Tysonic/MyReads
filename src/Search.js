@@ -1,16 +1,43 @@
-import React from "react"
-import ShelfList from "./ShelfList"
-import {update} from "./BooksAPI"
-import {Link} from "react-router-dom"
+import React from "react";
+import { Link } from "react-router-dom";
+import BookDisplay from "./BookDisplay";
+import { search } from "./BooksAPI";
 
-const Search =(props)=>{
+class Search extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      books: [],
+    };
+    this.handleSearch = this.handleSearch.bind(this);
+  }
 
-return (
- <div className="search-books">
-            <div className="search-books-bar">
-              <Link to="/list" className="close-search">Close</Link>
-              <div className="search-books-input-wrapper">
-                {/*
+  handleSearch = (event) => {
+    event.target.value === ""
+      ? 
+          this.setState((prevState) => {
+            prevState.books = [];
+          })
+      : search(event.target.value, 20).then((data) => {
+          this.setState((prevState) => {
+            if (data.error) {
+              prevState.error = data.error;
+            } else {
+              prevState.error = undefined;
+              prevState.books = data;              
+            }
+          });
+        });
+  };
+  render() {
+    return (
+      <div className="search-books">
+        <div className="search-books-bar">
+          <Link to="/" className="close-search">
+            Close
+          </Link>
+          <div className="search-books-input-wrapper">
+            {/*
                   NOTES: The search from BooksAPI is limited to a particular set of search terms.
                   You can find these search terms here:
                   https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
@@ -18,39 +45,29 @@ return (
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-                <input type="text" onChange={props.handleSearch} placeholder="Search by title or author"/>
-
-              </div>
-            </div>
-            <div className="search-books-results">
-				{ props.error ? 
-                 <p>{props.error}</p> 
-: 
-					<ol className="books-grid">
-				{props.books.map(e=>{
- 					return(
-                 <li key={e.id}>
-                        <div className="book">
-                          <div className="book-top">
-                            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 														`url("${e.imageLinks.thumbnail}")` }}></div>
-                            <div className="book-shelf-changer">
-                              <select value={e.shelf} onChange={(event)=>update(e,event.target.value)
-								.then(()=>props.handleUpdate())
-								}>
-                                <option value="move" disabled>Move to...</option>
-                                {ShelfList}
-                              </select>
-                            </div>
-                          </div>
-                          <div className="book-title">{e.title}</div>
-                          <div className="book-authors">{e.author}</div>
-                        </div>
-                      </li>)
-				})}
-				</ol>}
-            </div>
+            <input
+              type="text"
+              onChange={this.handleSearch}
+              placeholder="Search by title or author"
+            />
           </div>
-)
+        </div>
+        <div className="search-books-results">
+          {this.state.error ? (
+            <p>{this.state.error}</p>
+          ) : (
+            <ol className="books-grid">
+              {this.state.books.map((e,index) => {
+                return (
+                  <BookDisplay key={index} e={e} shelf={e.key} handleUpdate={this.props.handleUpdate} />
+                );
+              })}
+            </ol>
+          )}
+        </div>
+      </div>
+    );
+  }
 }
 
-export default Search
+export default Search;

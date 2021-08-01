@@ -1,6 +1,10 @@
 export const WantToRead = "wantToRead";
 export const Read = "read";
 export const CurrentlyReading = "currentlyReading";
-export const Shelves = [{"key":1,"value":WantToRead},
-                        {"key":2,"value":Read},
-                        {"key":3,"value":CurrentlyReading}]
+export const Shelves = [
+  { key: "move", value: "Move to...", disabled: true },
+  { key: "wantToRead", value: "Want To Read" },
+  { key: "read", value: "Read" },
+  { key: "currentlyReading", value: "Currently Reading" },
+  { key: "none", value: "None" },
+];
