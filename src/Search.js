@@ -14,17 +14,16 @@ class Search extends React.Component {
 
   handleSearch = (event) => {
     event.target.value === ""
-      ? 
-          this.setState((prevState) => {
-            prevState.books = [];
-          })
+      ? this.setState((prevState) => {
+          prevState.books = [];
+        })
       : search(event.target.value, 20).then((data) => {
           this.setState((prevState) => {
             if (data.error) {
               prevState.error = data.error;
             } else {
               prevState.error = undefined;
-              prevState.books = data;              
+              prevState.books = data;
             }
           });
         });
@@ -57,9 +56,14 @@ class Search extends React.Component {
             <p>{this.state.error}</p>
           ) : (
             <ol className="books-grid">
-              {this.state.books.map((e,index) => {
+              {this.state.books.map((e, index) => {
                 return (
-                  <BookDisplay key={index} e={e} shelf={e.key} handleUpdate={this.props.handleUpdate} />
+                  <BookDisplay
+                    key={index}
+                    e={e}
+                    shelf={e.key}
+                    handleUpdate={this.props.handleUpdate}
+                  />
                 );
               })}
             </ol>

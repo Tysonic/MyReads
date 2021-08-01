@@ -1,5 +1,17 @@
 # MyReads Project
 
+This is an applicaton for tracking books in different archieves.
+It has three main categories; "Want To Read", "Read", "Currently Reading".
+It then also includes all the books that are not categorized.
+
+##Technologies used
+React. A declarative, efficient, and flexible JavaScript library for building user interfaces,(https://reactjs.org/tutorial/tutorial.html)
+React Router. it's used for managing routes
+
+
+
+
+
 This is the starter template for the final assessment project for Udacity's React Fundamentals course. The goal of this template is to save you time by providing a static example of the CSS and HTML markup that may be used, but without any of the React code that is needed to complete the project. If you choose to start with this template, your job will be to add interactivity to the app by refactoring the static code in this template.
 
 Of course, you are free to start this project from scratch if you wish! Just be sure to use [Create React App](https://github.com/facebookincubator/create-react-app) to bootstrap the project.

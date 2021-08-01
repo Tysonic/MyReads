@@ -6,8 +6,10 @@ const ListBooks = (props) => {
     <ol className="books-grid">
       {props.books
         .filter((e) => e.shelf === props.shelf)
-        .map((e,index) => {
-          return <BookDisplay key={index} e={e} handleUpdate={props.handleUpdate} />;
+        .map((e, index) => {
+          return (
+            <BookDisplay key={index} e={e} handleUpdate={props.handleUpdate} />
+          );
         })}
     </ol>
   );

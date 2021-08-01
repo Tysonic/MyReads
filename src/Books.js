@@ -1,6 +1,6 @@
 import React from "react";
-import ListBooks from "./ListBooks";
 import { Link } from "react-router-dom";
+import ListBooks from "./ListBooks";
 import { Shelves } from "./Constants";
 
 const Books = (props) => {
@@ -12,7 +12,6 @@ const Books = (props) => {
       <div className="list-books-content">
         <div>
           {Shelves.slice(1, 4).map((e) => {
-    				
             return (
               <div key={e.key} className="bookshelf">
                 <h2 className="bookshelf-title">{e.value}</h2>
